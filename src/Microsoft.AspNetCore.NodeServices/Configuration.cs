@@ -1,12 +1,11 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Microsoft.AspNetCore.NodeServices {
     public static class Configuration {
         private readonly static string[] defaultWatchFileExtensions = new[] { ".js", ".jsx", ".ts", ".tsx", ".json", ".html" };
         private readonly static NodeServicesOptions defaultOptions = new NodeServicesOptions {
-            HostingModel = NodeHostingModel.Http,
+            HostingModel = NodeHostingModel.Pipe,
             WatchFileExtensions = defaultWatchFileExtensions
         };
 
@@ -31,6 +30,8 @@ namespace Microsoft.AspNetCore.NodeServices {
             {
                 case NodeHostingModel.Http:
                     return new HttpNodeInstance(options.ProjectPath, /* port */ 0, watchFileExtensions);
+                case NodeHostingModel.Pipe:
+                    return new PipeNodeInstance(options.ProjectPath, watchFileExtensions);
                 case NodeHostingModel.InputOutputStream:
                     return new InputOutputStreamNodeInstance(options.ProjectPath);
                 default:
@@ -45,7 +46,7 @@ namespace Microsoft.AspNetCore.NodeServices {
         public string[] WatchFileExtensions { get; set; }
 
         public NodeServicesOptions() {
-            this.HostingModel = NodeHostingModel.Http;
+            this.HostingModel = NodeHostingModel.Pipe;
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Microsoft.AspNetCore.SpaServices.Prerendering
             // in your startup file, but then again it might be confusing that you don't need to.
             if (this.nodeServices == null) {
                 this.nodeServices = fallbackNodeServices = Configuration.CreateNodeServices(new NodeServicesOptions {
-                    HostingModel = NodeHostingModel.Http,
+                    HostingModel = NodeHostingModel.Tcp,
                     ProjectPath = this.applicationBasePath
                 });
             }
